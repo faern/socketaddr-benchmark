@@ -2,6 +2,8 @@ use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use std::net::{Ipv4Addr, Ipv6Addr, SocketAddr, SocketAddrV4, SocketAddrV6, UdpSocket};
 
 pub fn criterion_benchmark(c: &mut Criterion) {
+    println!("size_of:<SocketAddrV4>() == {}", std::mem::size_of::<SocketAddrV4>());
+
     c.bench_function("Ipv4Addr::new", |b| {
         b.iter(|| Ipv4Addr::new(black_box(20), black_box(30), black_box(40), black_box(50)))
     });
