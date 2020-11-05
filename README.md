@@ -14,7 +14,8 @@ with the other internal representation:
 cargo run --bin print-mem
 ```
 
-Spoiler: All sizes stay the same, except for `SocketAddrV4` that shrink from 16 to 8 bytes.
+Spoiler: All sizes stay the same, except for `SocketAddrV4` that shrink from 16 to 6 bytes.
+And some alignments become lower.
 
 How to run the Criterion benchmarks in [benches/socketaddr-benchmark.rs](benches/socketaddr-benchmark.rs):
 
