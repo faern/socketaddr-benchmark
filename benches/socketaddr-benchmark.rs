@@ -51,6 +51,7 @@ pub fn criterion_benchmark(c: &mut Criterion) {
         b.iter(|| format!("{}", addr))
     });
 
+    // Trying to benchmark converting a `SocketAddr` into system representation
     c.bench_function("UdpSocket::send_to (v4)", |b| {
         let local_addr = SocketAddr::new(Ipv4Addr::UNSPECIFIED.into(), 0);
         let remote_addr = SocketAddr::new(Ipv4Addr::new(198, 18, 0, 1).into(), 1234);
@@ -64,6 +65,18 @@ pub fn criterion_benchmark(c: &mut Criterion) {
         let socket = UdpSocket::bind(local_addr).unwrap();
         let buf = [0u8; 1];
         b.iter(|| socket.send_to(&buf, black_box(remote_addr)).unwrap())
+    });
+
+    // Trying to benchmark converting a system representation sockaddr into a Rust `SocketAddr`
+    c.bench_function("UdpSocket::local_addr (v4)", |b| {
+        let local_addr = SocketAddr::new(Ipv4Addr::LOCALHOST.into(), 0);
+        let socket = UdpSocket::bind(black_box(local_addr)).unwrap();
+        b.iter(|| socket.local_addr().unwrap())
+    });
+    c.bench_function("UdpSocket::local_addr (v6)", |b| {
+        let local_addr = SocketAddr::new(Ipv6Addr::LOCALHOST.into(), 0);
+        let socket = UdpSocket::bind(black_box(local_addr)).unwrap();
+        b.iter(|| socket.local_addr().unwrap())
     });
 }
 
